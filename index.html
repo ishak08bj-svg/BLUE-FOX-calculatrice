@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Advanced Scientific Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- الآلة الحاسبة -->
+  <div class="calculator">
+    <div class="top">
+      <button id="themeBtn">🌙 / ☀️</button>
+      <button id="langBtn">🌍</button>
+      <button onclick="clr()">C</button>
+    </div>
+
+    <div id="display" class="display">0</div>
+
+    <div class="buttons">
+      <!-- الدوال العلمية -->
+      <button class="calc" onclick="add('sin(')">sin</button>
+      <button class="calc" onclick="add('cos(')">cos</button>
+      <button class="calc" onclick="add('tan(')">tan</button>
+      <button class="calc" onclick="add('sqrt(')">√</button>
+
+      <!-- الأرقام والعمليات -->
+      <button class="calc" onclick="add('7')">7</button>
+      <button class="calc" onclick="add('8')">8</button>
+      <button class="calc" onclick="add('9')">9</button>
+      <button class="calc op" onclick="add('/')">÷</button>
+
+      <button class="calc" onclick="add('4')">4</button>
+      <button class="calc" onclick="add('5')">5</button>
+      <button class="calc" onclick="add('6')">6</button>
+      <button class="calc op" onclick="add('*')">×</button>
+
+      <button class="calc" onclick="add('1')">1</button>
+      <button class="calc" onclick="add('2')">2</button>
+      <button class="calc" onclick="add('3')">3</button>
+      <button class="calc op" onclick="add('-')">−</button>
+
+      <button class="calc" onclick="add('0')">0</button>
+      <button class="calc" onclick="add('.')">.</button>
+      <button class="calc" onclick="add('^')">^</button>
+      <button class="calc op" onclick="add('+')">+</button>
+
+      <!-- الأزرار الأساسية -->
+      <button class="calc eq" onclick="calc()">=</button>
+      <button class="calc eq" onclick="draw()">📊</button>
+      <button class="calc eq" onclick="solveEquation()">🧠</button>
+      <button class="calc eq" onclick="saveGraph()">💾 حفظ PNG</button>
+
+      <!-- أزرار تجربة سريعة -->
+      <button class="calc eq" onclick="testGraph('x^2 + 2*x + 1')">x²+2x+1</button>
+      <button class="calc eq" onclick="testGraph('sin(x)')">sin(x)</button>
+      <button class="calc eq" onclick="testGraph('x^3 - 3*x + 2')">x³-3x+2</button>
+    </div>
+  </div>
+
+  <!-- الرسم البياني -->
+  <div class="graph">
+    <canvas id="canvas" width="400" height="300"></canvas>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

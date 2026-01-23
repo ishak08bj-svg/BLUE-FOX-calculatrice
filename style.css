@@ -1,0 +1,85 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',Tahoma,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transition:.3s;
+}
+.app{
+  width:100%;
+  max-width:900px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  padding:20px;
+}
+.calculator,.graph{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(15px);
+  border-radius:25px;
+  padding:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+.top button{
+  background:#222;
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:12px;
+  cursor:pointer;
+}
+.display{
+  background:rgba(0,0,0,.5);
+  border-radius:15px;
+  padding:15px;
+  font-size:22px;
+  text-align:right;
+  margin-bottom:15px;
+  min-height:55px;
+  overflow-x:auto;
+}
+.buttons{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+button.calc{
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+  cursor:pointer;
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  color:#fff;
+  transition:.2s;
+}
+button.calc:hover{transform:scale(1.05)}
+.op{background:linear-gradient(90deg,#ff512f,#dd2476)}
+.eq{grid-column:span 2;background:linear-gradient(90deg,#2ecc71,#27ae60)}
+.clear{background:#e74c3c}
+canvas{
+  width:100%;
+  height:300px;
+  background:#000;
+  border-radius:15px;
+}
+body.light{
+  background:linear-gradient(135deg,#f5f7fa,#c3cfe2);
+  color:#000;
+}
+body.light .calculator,
+body.light .graph{
+  background:rgba(0,0,0,.1);
+}
+@media(max-width:768px){
+  .app{grid-template-columns:1fr}
+}
