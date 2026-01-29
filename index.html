@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Math Calculator</title>
+<title>Ultimate Math Calculator + History Panel</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#0aa2ff,#001f3f);display:flex;justify-content:center;align-items:center;}
-.apps{width:380px;display:flex;flex-direction:column;gap:24px;}
-.card{border-radius:30px;background:linear-gradient(145deg,#1ec9ff,#005eff);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(0,0,0,.6),inset 0 2px 6px rgba(255,255,255,.4);transition:.45s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;padding:20px;}
+*{box-sizing:border-box;font-family:'Segoe UI',sans-serif;margin:0;padding:0;}
+body{min-height:100vh;background:radial-gradient(circle at top,#0aa2ff,#001f3f);display:flex;justify-content:center;align-items:center;gap:20px;padding:10px;}
+
+.container{display:flex;flex-wrap:wrap;gap:20px;max-width:1200px;}
+
+.card{border-radius:30px;background:linear-gradient(145deg,#1ec9ff,#005eff);color:white;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;box-shadow:0 30px 60px rgba(0,0,0,.6),inset 0 2px 6px rgba(255,255,255,.4);transition:.45s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;padding:20px;width:380px;}
 .card::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-100%);transition:.7s;}
 .card:hover::before{transform:translateX(100%);}
 .card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 40px 80px rgba(0,0,0,.9);}
 .icon{font-size:52px;margin-bottom:10px;filter:drop-shadow(0 6px 15px rgba(0,0,0,.6));}
 .name{font-size:16px;font-weight:800;letter-spacing:1.6px;margin-bottom:10px;}
 .display{width:100%;background:rgba(0,0,0,0.3);border-radius:15px;padding:15px;font-size:1.6rem;text-align:right;margin-bottom:10px;color:white;min-height:50px;overflow-x:auto;}
-.history{background:rgba(0,0,0,0.2);border-radius:12px;max-height:120px;overflow-y:auto;padding:8px;font-size:0.85rem;margin-bottom:10px;}
-.history p{margin:3px 0;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:2px;}
 .buttons-wrapper{width:100%;overflow-y:auto;max-height:450px;}
 .buttons{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
 button{padding:12px;border:none;border-radius:12px;font-size:1rem;cursor:pointer;background:linear-gradient(145deg,#ff6a00,#ee0979);color:white;transition:0.3s;}
@@ -26,21 +26,25 @@ button.equal{background:linear-gradient(145deg,#00ff6a,#00c851);grid-column:span
 button.clear{background:linear-gradient(145deg,#ff3d3d,#ff0000);}
 button.func{background:linear-gradient(145deg,#f3ff00,#f39c12);color:#000;}
 button.memory{background:linear-gradient(145deg,#9b59b6,#8e44ad);}
+
+/* اللوحة الجانبية للتاريخ */
+.history-panel{width:350px;background:rgba(0,0,0,0.2);border-radius:20px;padding:10px;max-height:600px;overflow-y:auto;color:white;}
+.history-panel h3{text-align:center;margin-bottom:10px;}
+.history-panel p{margin:5px 0;padding:5px;background:rgba(255,255,255,0.1);border-radius:8px;word-break:break-word;}
 </style>
 </head>
 <body>
 
-<div class="apps">
+<div class="container">
+  <!-- الآلة الحاسبة -->
   <div class="card">
     <div class="icon">🧮</div>
     <div class="name">Ultimate Math Calculator</div>
     
     <div class="display" id="display">0</div>
-    <div class="history" id="history"></div>
 
     <div class="buttons-wrapper">
       <div class="buttons">
-        <!-- صف العمليات الأساسية والذاكرة -->
         <button class="clear" onclick="clearDisplay()">C</button>
         <button class="memory" onclick="memoryClear()">MC</button>
         <button class="memory" onclick="memoryRecall()">MR</button>
@@ -48,7 +52,6 @@ button.memory{background:linear-gradient(145deg,#9b59b6,#8e44ad);}
         <button class="memory" onclick="memorySubtract()">M-</button>
         <button class="operator" onclick="appendValue('÷')">÷</button>
 
-        <!-- أرقام ودوال -->
         <button onclick="appendValue('7')">7</button>
         <button onclick="appendValue('8')">8</button>
         <button onclick="appendValue('9')">9</button>
@@ -81,31 +84,21 @@ button.memory{background:linear-gradient(145deg,#9b59b6,#8e44ad);}
         <button class="equal" onclick="calculate()">=</button>
       </div>
     </div>
+  </div>
 
-    <!-- معادلات جاهزة للتجربة -->
-    <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:5px;">
-      <button onclick="setTest('5+3*2')">5+3*2</button>
-      <button onclick="setTest('Math.sqrt(16)+2**3')">√(16)+2^3</button>
-      <button onclick="setTest('factorial(5)')">5!</button>
-      <button onclick="setTest('Math.log(100)')">log(100)</button>
-      <button onclick="setTest('Math.abs(-7)')">abs(-7)</button>
-      <button onclick="setTest('Math.ceil(3.4)')">ceil(3.4)</button>
-      <button onclick="setTest('Math.floor(3.8)')">floor(3.8)</button>
-      <button onclick="setTest('Math.sin(Math.PI/2)')">sin(π/2)</button>
-      <button onclick="setTest('Math.exp(2)')">e^2</button>
-      <button onclick="setTest('12%5')">12 mod 5</button>
-    </div>
-
+  <!-- اللوحة الجانبية للتاريخ -->
+  <div class="history-panel" id="historyPanel">
+    <h3>كل العمليات المحفوظة</h3>
   </div>
 </div>
 
 <script>
 let display=document.getElementById('display');
-let history=document.getElementById('history');
+let historyPanel=document.getElementById('historyPanel');
 let currentInput='';
 let memory=0;
 
-// إضافة دالة factorial
+// factorial
 function factorial(n){
   n=parseInt(n);
   if(n<0) return NaN;
@@ -114,7 +107,6 @@ function factorial(n){
   return f;
 }
 
-// أزرار العمليات
 function appendValue(val){
   currentInput+=val;
   display.innerText=currentInput;
@@ -122,16 +114,19 @@ function appendValue(val){
 
 function clearDisplay(){ currentInput=''; display.innerText='0'; }
 
-// الحساب
 function calculate(){
   try{
     let expr=currentInput.replace(/÷/g,'/').replace(/×/g,'*');
-    // دعم factorial
     expr=expr.replace(/factorial\((\d+)\)/g,(match,p1)=>factorial(p1));
     let result=eval(expr);
     if(result===undefined) result='خطأ';
-    history.innerHTML+=`<p>${currentInput} = ${result}</p>`;
-    history.scrollTop=history.scrollHeight;
+    
+    // إضافة العملية إلى اللوحة الجانبية
+    let p=document.createElement('p');
+    p.innerText=`${currentInput} = ${result}`;
+    historyPanel.appendChild(p);
+    historyPanel.scrollTop=historyPanel.scrollHeight;
+
     display.innerText=result;
     currentInput=result.toString();
   }catch(e){
@@ -140,16 +135,12 @@ function calculate(){
   }
 }
 
-// معادلات جاهزة للتجربة
-function setTest(expr){
-  currentInput=expr;
-  display.innerText=currentInput;
-}
-
-// الذاكرة
+// memory
 function memoryClear(){ memory=0; }
 function memoryRecall(){ appendValue(memory.toString()); }
 function memoryAdd(){ memory+=parseFloat(display.innerText)||0; }
 function memorySubtract(){ memory-=parseFloat(display.innerText)||0; }
-
 </script>
+
+</body>
+</html>
