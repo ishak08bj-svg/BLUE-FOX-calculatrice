@@ -2,73 +2,154 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>BLUE FOX CALCULATRICE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+<title>Ultimate Math Calculator</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#0aa2ff,#001f3f);display:flex;justify-content:center;align-items:center;}
+.apps{width:380px;display:flex;flex-direction:column;gap:24px;}
+.card{border-radius:30px;background:linear-gradient(145deg,#1ec9ff,#005eff);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(0,0,0,.6),inset 0 2px 6px rgba(255,255,255,.4);transition:.45s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;padding:20px;}
+.card::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-100%);transition:.7s;}
+.card:hover::before{transform:translateX(100%);}
+.card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 40px 80px rgba(0,0,0,.9);}
+.icon{font-size:52px;margin-bottom:10px;filter:drop-shadow(0 6px 15px rgba(0,0,0,.6));}
+.name{font-size:16px;font-weight:800;letter-spacing:1.6px;margin-bottom:10px;}
+.display{width:100%;background:rgba(0,0,0,0.3);border-radius:15px;padding:15px;font-size:1.6rem;text-align:right;margin-bottom:10px;color:white;min-height:50px;overflow-x:auto;}
+.history{background:rgba(0,0,0,0.2);border-radius:12px;max-height:120px;overflow-y:auto;padding:8px;font-size:0.85rem;margin-bottom:10px;}
+.history p{margin:3px 0;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:2px;}
+.buttons-wrapper{width:100%;overflow-y:auto;max-height:450px;}
+.buttons{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
+button{padding:12px;border:none;border-radius:12px;font-size:1rem;cursor:pointer;background:linear-gradient(145deg,#ff6a00,#ee0979);color:white;transition:0.3s;}
+button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(0,0,0,0.5);}
+button.operator{background:linear-gradient(145deg,#00c6ff,#0072ff);}
+button.equal{background:linear-gradient(145deg,#00ff6a,#00c851);grid-column:span 2;}
+button.clear{background:linear-gradient(145deg,#ff3d3d,#ff0000);}
+button.func{background:linear-gradient(145deg,#f3ff00,#f39c12);color:#000;}
+button.memory{background:linear-gradient(145deg,#9b59b6,#8e44ad);}
+</style>
 </head>
 <body>
 
-<div class="app">
+<div class="apps">
+  <div class="card">
+    <div class="icon">🧮</div>
+    <div class="name">Ultimate Math Calculator</div>
+    
+    <div class="display" id="display">0</div>
+    <div class="history" id="history"></div>
 
-  <!-- الآلة الحاسبة -->
-  <div class="calculator">
-    <div class="top">
-      <button id="themeBtn">🌙 / ☀️</button>
-      <button id="langBtn">🌍</button>
-      <button onclick="clr()">C</button>
+    <div class="buttons-wrapper">
+      <div class="buttons">
+        <!-- صف العمليات الأساسية والذاكرة -->
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button class="memory" onclick="memoryClear()">MC</button>
+        <button class="memory" onclick="memoryRecall()">MR</button>
+        <button class="memory" onclick="memoryAdd()">M+</button>
+        <button class="memory" onclick="memorySubtract()">M-</button>
+        <button class="operator" onclick="appendValue('÷')">÷</button>
+
+        <!-- أرقام ودوال -->
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button class="operator" onclick="appendValue('×')">×</button>
+        <button class="func" onclick="appendValue('Math.sqrt(')">√</button>
+        <button class="func" onclick="appendValue('**')">^</button>
+
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button class="operator" onclick="appendValue('-')">−</button>
+        <button class="func" onclick="appendValue('Math.sin(')">sin</button>
+        <button class="func" onclick="appendValue('Math.cos(')">cos</button>
+
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button class="operator" onclick="appendValue('+')">+</button>
+        <button class="func" onclick="appendValue('Math.tan(')">tan</button>
+        <button class="func" onclick="appendValue('Math.log(')">log</button>
+
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button class="func" onclick="appendValue('(')">(</button>
+        <button class="func" onclick="appendValue(')')">)</button>
+        <button class="func" onclick="appendValue('Math.PI')">π</button>
+        <button class="func" onclick="appendValue('Math.E')">e</button>
+        <button class="func" onclick="appendValue('Math.abs(')">abs</button>
+        <button class="func" onclick="appendValue('factorial(')">!</button>
+        <button class="equal" onclick="calculate()">=</button>
+      </div>
     </div>
 
-    <div id="display" class="display">0</div>
-
-    <div class="buttons">
-      <!-- الدوال العلمية -->
-      <button class="calc" onclick="add('sin(')">sin</button>
-      <button class="calc" onclick="add('cos(')">cos</button>
-      <button class="calc" onclick="add('tan(')">tan</button>
-      <button class="calc" onclick="add('sqrt(')">√</button>
-
-      <!-- الأرقام والعمليات -->
-      <button class="calc" onclick="add('7')">7</button>
-      <button class="calc" onclick="add('8')">8</button>
-      <button class="calc" onclick="add('9')">9</button>
-      <button class="calc op" onclick="add('/')">÷</button>
-
-      <button class="calc" onclick="add('4')">4</button>
-      <button class="calc" onclick="add('5')">5</button>
-      <button class="calc" onclick="add('6')">6</button>
-      <button class="calc op" onclick="add('*')">×</button>
-
-      <button class="calc" onclick="add('1')">1</button>
-      <button class="calc" onclick="add('2')">2</button>
-      <button class="calc" onclick="add('3')">3</button>
-      <button class="calc op" onclick="add('-')">−</button>
-
-      <button class="calc" onclick="add('0')">0</button>
-      <button class="calc" onclick="add('.')">.</button>
-      <button class="calc" onclick="add('^')">^</button>
-      <button class="calc op" onclick="add('+')">+</button>
-
-      <!-- الأزرار الأساسية -->
-      <button class="calc eq" onclick="calc()">=</button>
-      <button class="calc eq" onclick="draw()">📊</button>
-      <button class="calc eq" onclick="solveEquation()">🧠</button>
-      <button class="calc eq" onclick="saveGraph()">💾 حفظ PNG</button>
-
-      <!-- أزرار تجربة سريعة -->
-      <button class="calc eq" onclick="testGraph('x^2 + 2*x + 1')">x²+2x+1</button>
-      <button class="calc eq" onclick="testGraph('sin(x)')">sin(x)</button>
-      <button class="calc eq" onclick="testGraph('x^3 - 3*x + 2')">x³-3x+2</button>
+    <!-- معادلات جاهزة للتجربة -->
+    <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:5px;">
+      <button onclick="setTest('5+3*2')">5+3*2</button>
+      <button onclick="setTest('Math.sqrt(16)+2**3')">√(16)+2^3</button>
+      <button onclick="setTest('factorial(5)')">5!</button>
+      <button onclick="setTest('Math.log(100)')">log(100)</button>
+      <button onclick="setTest('Math.abs(-7)')">abs(-7)</button>
+      <button onclick="setTest('Math.ceil(3.4)')">ceil(3.4)</button>
+      <button onclick="setTest('Math.floor(3.8)')">floor(3.8)</button>
+      <button onclick="setTest('Math.sin(Math.PI/2)')">sin(π/2)</button>
+      <button onclick="setTest('Math.exp(2)')">e^2</button>
+      <button onclick="setTest('12%5')">12 mod 5</button>
     </div>
-  </div>
 
-  <!-- الرسم البياني -->
-  <div class="graph">
-    <canvas id="canvas" width="400" height="300"></canvas>
   </div>
-
 </div>
 
-<script src="script.js"></script>
-</body>
-</html>
+<script>
+let display=document.getElementById('display');
+let history=document.getElementById('history');
+let currentInput='';
+let memory=0;
 
+// إضافة دالة factorial
+function factorial(n){
+  n=parseInt(n);
+  if(n<0) return NaN;
+  if(n===0) return 1;
+  let f=1; for(let i=1;i<=n;i++) f*=i;
+  return f;
+}
+
+// أزرار العمليات
+function appendValue(val){
+  currentInput+=val;
+  display.innerText=currentInput;
+}
+
+function clearDisplay(){ currentInput=''; display.innerText='0'; }
+
+// الحساب
+function calculate(){
+  try{
+    let expr=currentInput.replace(/÷/g,'/').replace(/×/g,'*');
+    // دعم factorial
+    expr=expr.replace(/factorial\((\d+)\)/g,(match,p1)=>factorial(p1));
+    let result=eval(expr);
+    if(result===undefined) result='خطأ';
+    history.innerHTML+=`<p>${currentInput} = ${result}</p>`;
+    history.scrollTop=history.scrollHeight;
+    display.innerText=result;
+    currentInput=result.toString();
+  }catch(e){
+    display.innerText='خطأ';
+    currentInput='';
+  }
+}
+
+// معادلات جاهزة للتجربة
+function setTest(expr){
+  currentInput=expr;
+  display.innerText=currentInput;
+}
+
+// الذاكرة
+function memoryClear(){ memory=0; }
+function memoryRecall(){ appendValue(memory.toString()); }
+function memoryAdd(){ memory+=parseFloat(display.innerText)||0; }
+function memorySubtract(){ memory-=parseFloat(display.innerText)||0; }
+
+</script>
